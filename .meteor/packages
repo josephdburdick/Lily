@@ -35,3 +35,5 @@ reactive-dict
 aldeed:collection2
 tracker
 dburles:google-maps
+mdg:geolocation
+promise
