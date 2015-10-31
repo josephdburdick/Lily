@@ -1,9 +1,19 @@
 var Geolocation = function Geolocation() {
-  this._options = {
-    enableHighAccuracy: true,
-    maximumAge        : 10000,
-    timeout           : 7000
-  };
+  if (Session.get('permission') === undefined){
+    var permission = confirm("Allow better functionality by reporting your location?");
+    if (permission){
+      this._options = {
+        enableHighAccuracy: true,
+        maximumAge        : 10000,
+        timeout           : 7000
+      };
+      Session.set('permission', true);
+    }
+    else{
+      Session.set('permission', false);
+      return false;
+    }
+  }
 };
 
 Geolocation.prototype = {
