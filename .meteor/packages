@@ -37,3 +37,4 @@ tracker
 dburles:google-maps
 mdg:geolocation
 promise
+arillo:flow-router-helpers
