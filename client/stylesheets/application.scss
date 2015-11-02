@@ -1,15 +1,8 @@
 @import "tools/extends";
+@import "tools/overrides";
 
 @import "objects/forms";
 
 @import "components/login";
 
 main{ padding-top: 50px; }
-
-
-/*
- * Overrides
- */
-
- // Bootstrap
- .center-block { float: none; }
