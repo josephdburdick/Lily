@@ -1,25 +1,31 @@
 <template name="settings">
   <main>
-    <div class="col-md-6 center-block">
-      <h3>Settings</h3>
+    <div class="col-md-5 col-sm-6 center-block">
+      <h1>Settings</h1>
       <form class="form-horizontal">
+        <div class="form-group">
+          <label for="user-name" class="col-sm-2 control-label">Username</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="user-name" placeholder="Screename">
+          </div>
+        </div>
         <div class="form-group">
           <label for="user-email" class="col-sm-2 control-label">Email</label>
           <div class="col-sm-10">
             <input type="email" class="form-control" id="user-email" placeholder="Email" value="{{currentUser.emails.[0].address}}">
           </div>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="user-password" class="col-sm-2 control-label">Password</label>
           <div class="col-sm-10">
             <input type="password" class="form-control" id="user-password" placeholder="Password">
           </div>
-        </div>
+        </div> -->
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <div class="checkbox">
               <label>
-                <input type="checkbox"> Track my Geolocation
+                <input type="checkbox" id="user-geolocation"> Enhance experience by reporting Geolocation
               </label>
             </div>
           </div>
