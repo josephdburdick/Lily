@@ -10,9 +10,13 @@ let extendAccounts = () => {
     // We still want the default hook's 'profile' behavior.
     if (options.profile)
       user.profile = options.profile;
-    else {
-      user.settings = {};
-    }
+
+    let settingsId = Settings.insert({ userId: user._id });
+
+    Settings.update({_id: settingsId}, {
+      $set: { settings: { locationTracking: true } }
+    });
+    
     return user;
   });
 };
