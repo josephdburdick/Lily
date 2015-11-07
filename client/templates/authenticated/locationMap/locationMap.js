@@ -10,10 +10,17 @@ if ( Meteor.isClient ) {
       // Make sure the maps API has loaded
       if ( GoogleMaps.loaded() ) {
         // Map initialization options
-        return {
-          center: new google.maps.LatLng( 40.69847032728747, -73.9514422416687 ),
-          zoom: 12
-        };
+        if ( Session.get( 'userCoords' ).lat ) {
+          return{
+            center: new google.maps.LatLng( Session.get( 'userCoords' ).lat, Session.get( 'userCoords' ).lng ),
+            zoom: 14
+          };
+        } else {
+          return {
+            center: new google.maps.LatLng( 40.69847032728747, -73.9514422416687 ),
+            zoom: 12
+          };
+        }
       }
     }
   } );
