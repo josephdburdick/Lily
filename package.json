@@ -1,7 +1,7 @@
 {
-  "name": "application-name",
+  "name": "Lily",
   "version": "1.0.0",
-  "description": "Application description.",
+  "description": "Offline Wifi Hotspots.",
   "scripts": {
     "start": "meteor --settings settings-development.json",
     "staging": "meteor deploy staging.meteor.com --settings settings-development.json",

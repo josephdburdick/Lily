@@ -28,7 +28,9 @@ let validation = ( template ) => {
         minlength: 'Use at least six characters, please.'
       }
     },
-    submitHandler() { _handleSignup( template ); }
+    submitHandler() {
+      _handleSignup( template );
+    }
   };
 };
 
@@ -44,7 +46,7 @@ let _handleSignup = ( template ) => {
     } else {
       Bert.alert( 'Welcome!', 'success' );
     }
-  });
+  } );
 };
 
 Modules.client.signup = signup;
