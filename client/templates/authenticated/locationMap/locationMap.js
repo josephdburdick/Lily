@@ -51,9 +51,7 @@ if ( Meteor.isClient ) {
     } );
   } );
 
-  Template.locationMap.onRendered( () => {
-    Session.set("MeteorToys_display", true);
-    
+  Template.locationMap.onRendered( () => {    
     // We can use the `ready` callback to interact with the map API once the map is ready.
     GoogleMaps.ready( 'exampleMap', ( map ) => {
       // Add a marker to the map once it's ready

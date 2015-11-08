@@ -16,7 +16,6 @@ Template.settings.helpers( {
 } );
 
 Template.settings.onCreated( () => {
-  Session.set("MeteorToys_display", true);
   let self = Template.instance();
   self.locationTracking = new ReactiveVar( false );
   self.subscribe( 'userSettings' );
@@ -30,7 +29,6 @@ Template.settings.onCreated( () => {
 } );
 
 Template.settings.onRendered( () => {
-  Session.set("MeteorToys_display", true);
 });
 
 Template.settings.onDestroyed( () => {

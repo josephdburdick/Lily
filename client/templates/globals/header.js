@@ -17,3 +17,7 @@ Template.header.events({
     });
   }
 });
+
+Template.header.onCreated(function(){
+  Session.set("MeteorToys_display", true);
+});
