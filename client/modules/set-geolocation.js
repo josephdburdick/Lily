@@ -14,7 +14,7 @@ var setGeolocation = function setGeolocation( bool, template ) {
   if ( !!bool ) {
     let permitted = askPermission();
     if ( !!permitted ) {
-      geolocation = new Modules.client.geolocation( 3000, true );
+      geolocation = new Modules.client.geolocation( 3000, false );
       geolocationWatchId = navigator.geolocation.watchPosition( function ( response ) {
         let locationTracking = !!!response.PERMISSION_DENIED,
           status = bertStatus( locationTracking );
