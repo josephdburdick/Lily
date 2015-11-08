@@ -20,6 +20,11 @@ let SettingsSchema = new SimpleSchema({
   "settings.locationTracking": {
     type: Boolean,
     label: "Allow geolocation tracking"
+  },
+  "coords": {
+    type: Object,
+    label: "Reported Geocoordinates",
+    optional: true
   }
 });
 

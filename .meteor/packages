@@ -12,13 +12,9 @@ themeteorchef:jquery-validation
 twbs:bootstrap
 browser-policy
 meteorhacks:npm
-
-
 themeteorchef:bert
 meteorhacks:ssr
 standard-minifiers
-
-
 npm-container
 ecmascript
 digilord:faker
@@ -39,3 +35,4 @@ mdg:geolocation
 promise
 arillo:flow-router-helpers
 msavin:mongol
+deanius:promise

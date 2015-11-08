@@ -1,5 +1,5 @@
 var Geolocation = function Geolocation() {
-  return Geolocation.prototype = {
+  Geolocation.prototype = {
     get watchID() {
       return this._watchID;
     },
@@ -36,6 +36,7 @@ var Geolocation = function Geolocation() {
       this.watchID = null;
     }
   };
+  // return Geolocation;
 
   /* Testing functions from another module */
   function log( Data ) {
