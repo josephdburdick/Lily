@@ -49,7 +49,7 @@ Geolocation.prototype = {
     // Assign the callback function to the local member
     this.callback = callback;
     // watchPosition is a method that gets called each time the position changes. Making sure it's only getting called once (watchId can be used to stop the function when necessary
-    if ( this.watchId == null ) {
+    if ( this.watchId === null ) {
       // notice usage of the bind function here
       this.watchId = navigator.geolocation.watchPosition( bind( this, this.onSuccess ), bind( this, this.onError ), {
         maximumAge: this.settings.maximumAge,
