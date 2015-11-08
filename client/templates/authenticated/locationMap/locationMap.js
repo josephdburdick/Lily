@@ -30,6 +30,7 @@ if ( Meteor.isClient ) {
   } );
 
   Template.locationMap.onCreated( () => {
+
     let self = Template.instance();
 
     self.locationTracking = new ReactiveVar( false );
@@ -51,7 +52,7 @@ if ( Meteor.isClient ) {
     } );
   } );
 
-  Template.locationMap.onRendered( () => {    
+  Template.locationMap.onRendered( () => {
     // We can use the `ready` callback to interact with the map API once the map is ready.
     GoogleMaps.ready( 'exampleMap', ( map ) => {
       // Add a marker to the map once it's ready

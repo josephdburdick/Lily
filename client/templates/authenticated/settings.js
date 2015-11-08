@@ -7,10 +7,19 @@ Template.settings.events( {
       ev.target.checked = result;
     }
   },
-  'keypress #user-name': (ev, template) => {
-    var keypressTimer = setTimeout(() => {
-      console.log(ev.currentTarget.value)
-    }, 500);
+  'blur #user-name': ( ev, template ) => {
+    let keypressTimer;
+    keypressTimer = setTimeout( () => {
+      var username = ev.currentTarget.value;
+      Meteor.call( 'changeUsername', username, function ( error, result ) {
+        if ( error ) {
+          Bert.alert( error.reason, 'danger' );
+        }
+        if ( result ) {
+          Bert.alert( 'Username successfully changed', 'success' );
+        }
+      } );
+    }, 1000 );
   }
 } );
 
@@ -21,6 +30,7 @@ Template.settings.helpers( {
 } );
 
 Template.settings.onCreated( () => {
+
   let self = Template.instance();
   self.locationTracking = new ReactiveVar( false );
   self.subscribe( 'userSettings' );
@@ -34,7 +44,8 @@ Template.settings.onCreated( () => {
 } );
 
 Template.settings.onRendered( () => {
-});
+  // Package[ "meteortoys:toykit" ].ToyKit.set( "display", true );
+} );
 
 Template.settings.onDestroyed( () => {
   self.stop();
