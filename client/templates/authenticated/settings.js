@@ -6,6 +6,11 @@ Template.settings.events( {
       template.locationTracking.set( result );
       ev.target.checked = result;
     }
+  },
+  'keypress #user-name': (ev, template) => {
+    var keypressTimer = setTimeout(() => {
+      console.log(ev.currentTarget.value)
+    }, 500);
   }
 } );
 
