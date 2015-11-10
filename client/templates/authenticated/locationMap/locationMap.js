@@ -16,7 +16,7 @@ if ( Meteor.isClient ) {
           if ( !!coords ) {
             return {
               center: new google.maps.LatLng( coords.lat, coords.lng ),
-              zoom: 14
+              zoom: 16
             };
           }
         } else {
