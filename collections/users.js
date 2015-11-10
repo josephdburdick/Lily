@@ -9,7 +9,3 @@ Meteor.users.deny({
   update: () => true,
   remove: () => true
 });
-
-/*
-  Meteor.users.update( { _id: Meteor.userId() }, { $set: { 'profile.online': true }} );
-*/

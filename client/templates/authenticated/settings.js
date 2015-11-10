@@ -44,7 +44,6 @@ Template.settings.onCreated( () => {
 } );
 
 Template.settings.onRendered( () => {
-  // Package[ "meteortoys:toykit" ].ToyKit.set( "display", true );
 } );
 
 Template.settings.onDestroyed( () => {
