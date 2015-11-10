@@ -1,11 +1,12 @@
 Meteor.methods( {
-  insertMarker( obj ) {
+  insertVenue( obj ) {
     check( obj, Object );
-    // check( obj.ownerId, String );
+    // check( obj.name, String );
     // check( obj.type, String );
-
+    // check( obj.address, String );
+    // check( obj.city, String );
     try {
-      var documentId = Markers.insert( obj );
+      var documentId = Venues.insert( obj );
       return documentId;
     } catch ( exception ) {
       return exception;

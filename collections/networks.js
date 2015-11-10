@@ -1,18 +1,18 @@
 Networks = new Meteor.Collection( 'networks' );
 
-Networks.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false
-});
+// Networks.allow({
+//   insert: () => false,
+//   update: () => false,
+//   remove: () => false
+// });
+//
+// Networks.deny({
+//   insert: () => true,
+//   update: () => true,
+//   remove: () => true
+// });
 
-Networks.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true
-});
-
-let NetworkSchema = new SimpleSchema({
+let NetworksSchema = new SimpleSchema({
   "ownerId" : {
     type: String,
     label: "Networks Owner"
@@ -35,4 +35,4 @@ let NetworkSchema = new SimpleSchema({
   }
 });
 
-Networks.attachSchema( NetworkSchema );
+// Networks.attachSchema( NetworksSchema );

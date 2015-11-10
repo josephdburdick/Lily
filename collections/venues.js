@@ -1,16 +1,16 @@
 Venues = new Meteor.Collection( 'venues' );
 
-Venues.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false
-});
-
-Venues.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true
-});
+// Venues.allow({
+//   insert: () => false,
+//   update: () => false,
+//   remove: () => false
+// });
+//
+// Venues.deny({
+//   insert: () => true,
+//   update: () => true,
+//   remove: () => true
+// });
 
 let VenuesSchema = new SimpleSchema({
   "name": {
@@ -27,7 +27,7 @@ let VenuesSchema = new SimpleSchema({
   },
   "city" : {
     type: String,
-    label: "Cenue City"
+    label: "Venue City"
   }
 });
 

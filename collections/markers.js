@@ -1,16 +1,16 @@
 Markers = new Meteor.Collection( 'Markers' );
 
-Markers.allow({
-  insert: () => false,
-  update: () => false,
-  remove: () => false
-});
-
-Markers.deny({
-  insert: () => true,
-  update: () => true,
-  remove: () => true
-});
+// Markers.allow({
+//   insert: () => false,
+//   update: () => false,
+//   remove: () => false
+// });
+//
+// Markers.deny({
+//   insert: () => true,
+//   update: () => true,
+//   remove: () => true
+// });
 
 let MarkersSchema = new SimpleSchema({
   "ownerId": {
