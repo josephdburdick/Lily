@@ -1,4 +1,4 @@
-Venues = new Meteor.Collection( 'venues' );
+Venues = new Meteor.Collection( 'Venues' );
 
 // Venues.allow({
 //   insert: () => false,

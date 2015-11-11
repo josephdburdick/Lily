@@ -6,7 +6,7 @@ if ( Meteor.isClient ) {
 
   } );
   Template.locationMap.helpers( {
-    exampleMapOptions: ( params ) => {
+    exampleMapOptions: ( ) => {
       // Make sure the maps API has loaded
       if ( GoogleMaps.loaded() ) {
         let self = Template.instance();
@@ -30,14 +30,14 @@ if ( Meteor.isClient ) {
   } );
 
   Template.locationMap.onCreated( () => {
-
     let self = Template.instance();
 
     self.locationTracking = new ReactiveVar( false );
     self.coords = new ReactiveVar( false );
     self.subscribe( 'userSettings' );
     self.subscribe( 'allUserMarkers' );
-    Tracker.autorun( function () {
+
+    Tracker.autorun( function (computation) {
       if ( !!Settings.findOne() ) {
         let locationTracking = Settings.findOne().settings.locationTracking;
         self.locationTracking.set( locationTracking );
@@ -47,9 +47,19 @@ if ( Meteor.isClient ) {
             Modules.client.setGeolocation( true, self );
           }
           self.coords.set( Geolocation.latLng() );
+        } else {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            self.coords.set({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            });
+            computation.stop();
+          });
+
         }
       }
     } );
+
   } );
 
   Template.locationMap.onRendered( () => {

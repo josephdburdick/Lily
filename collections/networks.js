@@ -1,4 +1,4 @@
-Networks = new Meteor.Collection( 'networks' );
+Networks = new Meteor.Collection( 'Networks' );
 
 // Networks.allow({
 //   insert: () => false,
