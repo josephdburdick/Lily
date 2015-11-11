@@ -35,4 +35,4 @@ let NetworksSchema = new SimpleSchema({
   }
 });
 
-// Networks.attachSchema( NetworksSchema );
+Networks.attachSchema( NetworksSchema );
