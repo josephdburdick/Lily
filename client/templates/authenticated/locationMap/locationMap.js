@@ -18,6 +18,8 @@ if ( Meteor.isClient ) {
               center: new google.maps.LatLng( coords.lat, coords.lng ),
               zoom: 16
             };
+          } else {
+            return;
           }
         } else {
           return {
@@ -42,7 +44,7 @@ if ( Meteor.isClient ) {
         let locationTracking = Settings.findOne().settings.locationTracking;
         self.locationTracking.set( locationTracking );
 
-        if ( self.locationTracking.get() ) {
+        if ( !!self.locationTracking.get() ) {
           if ( !Geolocation.latLng() ) {
             Modules.client.setGeolocation( true, self );
           }
@@ -55,7 +57,6 @@ if ( Meteor.isClient ) {
             });
             computation.stop();
           });
-
         }
       }
     } );
