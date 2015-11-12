@@ -11,12 +11,15 @@ let extendAccounts = () => {
     if (options.profile)
       user.profile = options.profile;
 
+    if (!user.username)
+      user.username = faker.company.bsAdjective() + faker.internet.userName();
+
     let settingsId = Settings.insert({ userId: user._id });
 
     Settings.update({_id: settingsId}, {
       $set: { settings: { locationTracking: true } }
     });
-    
+
     return user;
   });
 };

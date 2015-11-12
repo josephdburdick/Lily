@@ -8,18 +8,21 @@ Template.settings.events( {
     }
   },
   'blur #user-name': ( ev, template ) => {
-    let keypressTimer;
+    let keypressTimer, username;
     keypressTimer = setTimeout( () => {
-      var username = ev.currentTarget.value;
-      Meteor.call( 'changeUsername', username, function ( error, result ) {
-        if ( error ) {
-          Bert.alert( error.reason, 'danger' );
-        }
-        if ( result ) {
-          Bert.alert( 'Username successfully changed', 'success' );
-        }
-      } );
-    }, 1000 );
+      ev.currentTarget.value = ev.currentTarget.value.trim().split(' ').join('');
+      username = ev.currentTarget.value;
+      setTimeout( () => {
+        Meteor.call( 'changeUsername', username, function ( error, result ) {
+          if ( error ) {
+            Bert.alert( error.reason, 'danger' );
+          }
+          if ( result ) {
+            Bert.alert( 'Username successfully changed', 'success' );
+          }
+        } );
+      }, 500);
+    }, 100 );
   }
 } );
 
