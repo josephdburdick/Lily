@@ -1,4 +1,4 @@
-Settings = new Meteor.Collection( 'Settings' );
+Settings = new Meteor.Collection( 'settings' );
 
 Settings.allow({
   insert: () => false,

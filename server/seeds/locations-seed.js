@@ -1,5 +1,7 @@
 Meteor.startup( function () {
   console.log( Venues.find().count() + ' venues' );
+  console.log( Markers.find().count() + ' markers' );
+  console.log( Networks.find().count() + ' networks' );
   console.log( Meteor.users.find().count() + ' users' );
 
   // Seed Venues database
@@ -26,19 +28,22 @@ Meteor.startup( function () {
           throw new Meteor.Error( 500, error );
         }
         if ( !error ) {
-					console.log(`Venue: ${response}`);
           var venueId = response;
+          // console.log( `Venue: ${venueId}` );
 
-          // // Create, add, and link Network to Venue
+          // Create, add, and link Network to Venue
           Meteor.call( 'insertNetwork', {
             ownerId: venueId,
             name: item.network.name,
             isPublic: item.network.isPublic,
-            password: item.network.password,
+            hasPassword: item.network.hasPassword,
             verified: item.network.verified
           }, function ( error, response ) {
             if ( !error ) {
-              console.log(`Network: ${response}`);
+              console.log( `Network: ${response}` );
+            }
+            if ( error ) {
+              console.log( error );
             }
           } );
 
@@ -50,7 +55,10 @@ Meteor.startup( function () {
             lng: item.location.lng
           }, function ( error, response ) {
             if ( !error ) {
-              console.log(`Marker: ${response}`);
+              console.log( `Marker: ${response}` );
+            }
+            if ( error ) {
+              console.log( error );
             }
           } );
 
@@ -59,5 +67,4 @@ Meteor.startup( function () {
     } );
 
   }
-
 } );

@@ -1,16 +1,16 @@
-Markers = new Meteor.Collection( 'Markers' );
+Markers = new Meteor.Collection( 'markers' );
 
-// Markers.allow({
-//   insert: () => false,
-//   update: () => false,
-//   remove: () => false
-// });
-//
-// Markers.deny({
-//   insert: () => true,
-//   update: () => true,
-//   remove: () => true
-// });
+Markers.allow({
+  insert: () => false,
+  update: () => false,
+  remove: () => false
+});
+
+Markers.deny({
+  insert: () => true,
+  update: () => true,
+  remove: () => true
+});
 
 let MarkersSchema = new SimpleSchema({
   "ownerId": {
@@ -24,13 +24,11 @@ let MarkersSchema = new SimpleSchema({
   "lat": {
     type: Number,
     decimal: true,
-    unique: true,
     label: "Marker Latitude"
   },
   "lng": {
     type: Number,
     decimal: true,
-    unique: true,
     label: "Marker Longitude"
   },
   "created": {
