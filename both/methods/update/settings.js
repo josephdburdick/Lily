@@ -17,24 +17,18 @@ Meteor.methods( {
       return exception;
     }
   },
-  setUsername: (username) => {
-    check( username, String );
-
-    if ( !Meteor.userId() ) {
-      throw new Meteor.Error( "not-authorized" );
+  updateUserSettings: function (userSettings) {
+    if (!this.userId) {
+      throw new Meteor.Error(401, 'not-authorized');
     }
-
-    try {
-      var documentId = Settings.update( {
-        userId: Meteor.userId()
-      }, {
-        $set: {
-          "settings.username": username
-        }
-      } );
-      return documentId;
-    } catch ( exception ) {
-      return exception;
+    check(userSettings, Object);
+    check(userSettings.username, String);
+    check(userSettings.locationTracking, Boolean);
+    let newUsername = userSettings.username,
+        changedUsername;
+    if (newUsername !== Meteor.user().username){
+      changedUsername = Meteor.call('changeUsername', newUsername);
     }
+    Meteor.call('setLocationTracking', userSettings.locationTracking);
   }
 } );
