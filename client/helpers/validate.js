@@ -18,5 +18,5 @@ $.validator.addMethod('isUniqueUsername', (username) => {
 });
 
 $.validator.addMethod('regex', (value, element, regexpr) => {
-  return regexpr.test(value);
+  return !regexpr.test(value);
 });

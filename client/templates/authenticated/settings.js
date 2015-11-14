@@ -1,22 +1,19 @@
 Template.settings.events({
   'change #user-geolocation': (ev, template) => {
     template.locationTracking.set(ev.target.checked);
-    // let result = Modules.client.setGeolocation( template.locationTracking.get() );
-    // if ( !result ) {
-    //   template.locationTracking.set( result );
-    //   ev.target.checked = result;
-    // }
-    console.log(template.locationTracking.get());
   },
-  'blur #user-name': (ev, template) => {
-    ev.currentTarget.value = ev.currentTarget.value.trim().split(' ').join('');
+
+  'blur #user-name': (ev) => {
+    ev.currentTarget.value = ev.currentTarget.value.trim().replace(/[^A-Za-z0-9\_]/g, "").split(' ').join('');
   },
+
   'submit #user-settings': (ev, template) => {
     ev.preventDefault();
-    if (!$(ev.currentTarget).find('.error').length){
+    if (!$(ev.currentTarget).find('.error').is(':visible').length){
       let userSettings = {
+        _id: Meteor.userId(),
         username: template.find('#user-name').value,
-        locationTracking: $(template).find('#user-geolocation').is(':checked')
+        locationTracking: $(ev.currentTarget).find('#user-geolocation').is(':checked')
       };
       Meteor.call('updateUserSettings', userSettings, function (error, result) {
         if (!error) Bert.alert('Updated user settings', 'success');
@@ -36,7 +33,6 @@ Template.settings.onCreated(() => {
 
   let self = Template.instance();
   self.locationTracking = new ReactiveVar(false);
-  self.formChanged = new ReactiveVar(false);
   self.subscribe('userSettings');
   self.subscribe('allUserNames');
 
@@ -53,7 +49,7 @@ Template.settings.onRendered(() => {
     rules: {
       userName: {
         isUniqueUsername: true,
-        regex: "^[a-zA-Z'.\\s]{1,40}$",
+        regex: /[^A-Za-z0-9\_]/g,
         required: true,
         minlength: 3,
         maxlength: 24
@@ -65,7 +61,7 @@ Template.settings.onRendered(() => {
     messages: {
       userName: {
         isUniqueUsername: "Username already taken.",
-        regex: "Invalid character in username.",
+        regex: "Only letters, numbers, and underscores allowed in username.",
         required: "You must input a username.",
         minlength: "Username must be at least 3 characters.",
         maxlength: "Username must not exceed 24 characters."

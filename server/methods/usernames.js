@@ -1,8 +1,8 @@
 Meteor.methods({
   isUsernameAvailable: function (username) {
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'not-authorized');
-    }
+    // if (Meteor.userId()) {
+    //   throw new Meteor.Error(401, 'not-authorized');
+    // }
     check(username, String);
 
     var userExistsId = Meteor.users.findOne({
@@ -15,9 +15,9 @@ Meteor.methods({
     }
   },
   isUsernameUnique: function (username) {
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'not-authorized');
-    }
+    // if (Meteor.userId()) {
+    //   throw new Meteor.Error(401, 'not-authorized');
+    // }
     check(username, String);
 
     var userExistsId = Meteor.users.findOne({
@@ -31,10 +31,13 @@ Meteor.methods({
     }
   },
   changeUsername: function (username) {
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'not-authorized');
-    }
+    // if (Meteor.userId()) {
+    //   throw new Meteor.Error(401, 'not-authorized');
+    // }
     check(username, String);
+    if (/[^A-Za-z0-9\_]/g.test(username)){
+      throw new Meteor.Error(401, 'Invalid character in username.');
+    }
     let available = Meteor.call('isUsernameAvailable', username);
     if (available) {
       Meteor.users.update({
@@ -50,9 +53,9 @@ Meteor.methods({
     }
   },
   isUsernameChanged: function (username) {
-    if (!this.userId) {
-      throw new Meteor.Error(401, 'not-authorized');
-    }
+    // if (Meteor.userId()) {
+    //   throw new Meteor.Error(401, 'not-authorized');
+    // }
     check(username, String);
   }
 });
