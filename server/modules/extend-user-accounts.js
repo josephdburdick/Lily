@@ -3,7 +3,9 @@ Meteor.users.deny({
     return true;
   }
 });
-
+let _createUsernameFromEmail = (email) => {
+  return email.split('@')[0].toLowerCase();
+};
 let extendAccounts = () => {
   Accounts.onCreateUser(function(options, user) {
 
@@ -12,7 +14,7 @@ let extendAccounts = () => {
       user.profile = options.profile;
 
     if (!user.username)
-      user.username = faker.company.bsAdjective() + faker.internet.userName();
+      user.username = _createUsernameFromEmail(user.emails[0].address);
 
     let settingsId = Settings.insert({ userId: user._id });
 
