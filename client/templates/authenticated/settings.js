@@ -9,15 +9,15 @@ Template.settings.events({
 
   'submit #user-settings': (ev, template) => {
     ev.preventDefault();
-    if (!$(ev.currentTarget).find('.error').is(':visible').length){
+    if (!$(ev.currentTarget).find('.error').is(':visible').length) {
       let userSettings = {
         _id: Meteor.userId(),
         username: template.find('#user-name').value,
         locationTracking: $(ev.currentTarget).find('#user-geolocation').is(':checked')
       };
       Meteor.call('updateUserSettings', userSettings, function (error, result) {
-        if (!error) Bert.alert('Updated user settings', 'success');
-        if (error) Bert.alert(error.reason, 'danger');
+        if (!error) Bert.alert('Updated user settings', 'success', 'growl-top-right');
+        if (error) Bert.alert(error.reason, 'danger', 'growl-top-right');
       });
     }
   }

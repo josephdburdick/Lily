@@ -1,8 +1,8 @@
 Meteor.methods({
   setLocationTracking: (locationTracking) => {
-    // if (!Meteor.userId()) {
-    //   throw new Meteor.Error(401, 'not-authorized');
-    // }
+    if (!Meteor.user()) {
+      throw new Meteor.Error(401, 'You need to be signed in to continue');
+    }
     check(locationTracking, Boolean);
     try {
       var documentId = Settings.update({
@@ -18,10 +18,10 @@ Meteor.methods({
     }
   },
   updateUserSettings: function (userSettings) {
-    // if (!Meteor.userId()) {
-    //   throw new Meteor.Error(401, 'not-authorized');
-    // }
-    
+    if (!Meteor.user()) {
+      throw new Meteor.Error(401, 'You need to be signed in to continue');
+    }
+
     check(userSettings, Object);
     check(userSettings._id, String);
     check(userSettings.username, String);

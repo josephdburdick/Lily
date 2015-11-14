@@ -1,23 +1,22 @@
 Template.header.helpers({
   brandLink() {
-    let login = FlowRouter.path( 'login' ),
-        index = FlowRouter.path( 'index' );
+    let login = FlowRouter.path('login'),
+      index = FlowRouter.path('index');
     return !Meteor.loggingIn() && !Meteor.userId() ? login : index;
   }
 });
 
 Template.header.events({
   'click .logout' () {
-    Meteor.logout( ( error ) => {
-      if ( error ) {
-        Bert.alert( error.reason, 'warning' );
+    Meteor.logout((error) => {
+      if (error) {
+        Bert.alert(error.reason, 'warning', 'growl-top-right');
       } else {
-        Bert.alert( 'Logged out!', 'success' );
+        Bert.alert('Logged out!', 'success', 'growl-top-right');
       }
     });
   }
 });
 
-Template.header.onCreated(function(){
-  Session.set("MeteorToys_display", true);
+Template.header.onCreated(function () {
 });

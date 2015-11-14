@@ -1,12 +1,12 @@
-let signup = ( options ) => {
-  _validate( options.form, options.template );
+let signup = (options) => {
+  _validate(options.form, options.template);
 };
 
-let _validate = ( form, template ) => {
-  $( form ).validate( validation( template ) );
+let _validate = (form, template) => {
+  $(form).validate(validation(template));
 };
 
-let validation = ( template ) => {
+let validation = (template) => {
   return {
     rules: {
       emailAddress: {
@@ -29,24 +29,24 @@ let validation = ( template ) => {
       }
     },
     submitHandler() {
-      _handleSignup( template );
+      _handleSignup(template);
     }
   };
 };
 
-let _handleSignup = ( template ) => {
+let _handleSignup = (template) => {
   let user = {
-    email: template.find( '[name="emailAddress"]' ).value,
-    password: template.find( '[name="password"]' ).value
+    email: template.find('[name="emailAddress"]').value,
+    password: template.find('[name="password"]').value
   };
 
-  Accounts.createUser( user, ( error ) => {
-    if ( error ) {
-      Bert.alert( error.reason, 'danger' );
+  Accounts.createUser(user, (error) => {
+    if (error) {
+      Bert.alert(error.reason, 'danger', 'growl-top-right');
     } else {
-      Bert.alert( 'Welcome!', 'success' );
+      Bert.alert('Welcome!', 'success', 'growl-top-right');
     }
-  } );
+  });
 };
 
 Modules.client.signup = signup;

@@ -53,13 +53,13 @@ var setGeolocation = function setGeolocation(bool, template) {
         // Tracking disallowed
         if (!locationTracking) {
           // error response
-          Bert.alert(response.message, 'error');
+          Bert.alert(response.message, 'error', 'growl-top-right');
           // Session.set( 'locationTracking', locationTracking );
           Meteor.call('setLocationTracking', locationTracking, (err, result) => {
             if (!err) {
-              Bert.alert(`Location tracking ${status.text}.`, status.color);
+              Bert.alert(`Location tracking ${status.text}.`, status.color, 'growl-top-right');
             } else {
-              Bert.alert(err, 'error');
+              Bert.alert(err, 'error', 'growl-top-right');
             }
           });
           return false;
@@ -67,17 +67,17 @@ var setGeolocation = function setGeolocation(bool, template) {
       });
       Session.set('geolocationWatchId', geolocationWatchId);
     } else {
-      Bert.alert('Location tracking cancelled.', 'warning');
+      Bert.alert('Location tracking cancelled.', 'warning', 'growl-top-right');
       Meteor.call('setLocationTracking', false, (error, result) => {
         if (!error) {
-          Bert.alert(`Location tracking cancelled.`, 'warning');
-          if (result === 1){
+          Bert.alert(`Location tracking cancelled.`, 'warning', 'growl-top-right');
+          if (result === 1) {
             console.log('User cancelled tracking.');
           }
           return false;
         }
         if (error) {
-          Bert.alert(error.reason, 'error');
+          Bert.alert(error.reason, 'error', 'growl-top-right');
           return false;
         }
       });
@@ -89,11 +89,11 @@ var setGeolocation = function setGeolocation(bool, template) {
 
     Meteor.call('setLocationTracking', false, (error, result) => {
       if (!error) {
-        Bert.alert(`Location tracking off.`, 'warning');
+        Bert.alert(`Location tracking off.`, 'warning', 'growl-top-right');
         return false;
       }
       if (error) {
-        Bert.alert(error.reason, 'error');
+        Bert.alert(error.reason, 'error', 'growl-top-right');
         return error.reason;
       }
     });
