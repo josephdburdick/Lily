@@ -1,10 +1,12 @@
 Meteor.methods( {
   insertMarker( obj ) {
-    check( obj, Object );
-    check( obj.ownerId, String );
-    check( obj.type, String );
-    check( obj.lat, Number);
-    check( obj.lng, Number);
+    check( obj, {
+      ownerId: String,
+      type: String,
+      lat: Number,
+      lng: Number,
+      coordinates: [Number]
+    } );
 
     try {
       var documentId = Markers.insert( obj );

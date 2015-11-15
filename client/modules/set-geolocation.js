@@ -14,8 +14,7 @@ var setGeolocation = function setGeolocation(bool, template) {
   if (!!bool) {
     let permitted = askPermission();
     if (!!permitted) {
-      console.log('permission: ' + permitted);
-      geolocation = new Modules.client.geolocation(3000, false);
+      geolocation = new Modules.client.geolocation(3000, true);
       geolocationWatchId = navigator.geolocation.watchPosition(function (response) {
         let locationTracking = !!!response.PERMISSION_DENIED,
           status = bertStatus(locationTracking);
@@ -34,17 +33,36 @@ var setGeolocation = function setGeolocation(bool, template) {
           Session.set('userCoords', coords);
           Session.set('locationTracking', locationTracking);
 
-          Meteor.call('insertMarker', {
-            ownerId: Meteor.userId(),
-            type: 'User',
-            lat: coords.lat,
-            lng: coords.lng,
-            created: new Date()
-          }, (error, result) => {
-            if (!error) {
-              console.log(`Marker added at [${coords.lat}, ${coords.lng}]`);
-            }
-          });
+          let marker = Markers.find({ownerId: Meteor.userId()}).fetch()[0];
+
+          if (!!marker){
+            Meteor.call('upsertMarker', {
+              _id: marker._id,
+              ownerId: Meteor.userId(),
+              type: 'User',
+              lat: coords.lat,
+              lng: coords.lng,
+              coordinates: [coords.lng, coords.lat] //,
+              //created: new Date()
+            }, (error, result) => {
+              if (!error) {
+                console.log(`Marker updated to [${coords.lat}, ${coords.lng}]`);
+              }
+            });
+          } else {
+            markerId = Meteor.call('insertMarker', {
+              ownerId: Meteor.userId(),
+              type: 'User',
+              lat: coords.lat,
+              lng: coords.lng,
+              coordinates: [coords.lng, coords.lat] //w,
+              //created: new Date()
+            }, (error, result) => {
+              if (!error) {
+                console.log(`Marker added at [${coords.lat}, ${coords.lng}]`);
+              }
+            });
+          }
 
           return true;
 

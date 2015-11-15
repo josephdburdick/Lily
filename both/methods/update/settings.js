@@ -35,10 +35,8 @@ Meteor.methods({
       changedUsername = Meteor.call('changeUsername', newUsername);
       changedTracking = Meteor.call('setLocationTracking', userSettings.locationTracking);
 
-      console.log(!!changedTracking && !!changedUsername);
     } else {
       changedTracking = Meteor.call('setLocationTracking', userSettings.locationTracking);
-      console.log(!!changedTracking);
     }
   }
 });

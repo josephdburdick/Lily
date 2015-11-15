@@ -36,7 +36,10 @@ if (Meteor.isClient) {
     self.locationTracking = new ReactiveVar(false);
     self.coords = new ReactiveVar(false);
     self.subscribe('userSettings');
-    self.subscribe('allUserMarkers');
+    self.subscribe('lastUserMarker');
+    // self.subscribe('allPublicMarkers');
+    self.subscribe('nearestMarkers', [40.650002, -73.949997]); //Session.get('userCoords'));
+
     Tracker.autorun(function () {
       if (!!Settings.findOne()) {
         let locationTracking = Settings.findOne().settings.locationTracking;
@@ -54,11 +57,69 @@ if (Meteor.isClient) {
   Template.locationMap.onRendered(() => {
     // We can use the `ready` callback to interact with the map API once the map is ready.
     GoogleMaps.ready('exampleMap', (map) => {
-      // Add a marker to the map once it's ready
-      var marker = new google.maps.Marker({
-        position: map.options.center,
-        map: map.instance
+      // Add markers once map is ready
+      let lat = map.options.center.lat,
+          lng = map.options.center.lng;
+
+      var markers = {};
+      Markers.find().observe({
+        added: function (document) {
+          // Create a marker for this document
+          var marker = new google.maps.Marker({
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: new google.maps.LatLng(document.lat, document.lng),
+            map: map.instance,
+            // We store the document _id on the marker in order
+            // to update the document within the 'dragend' event below.
+            id: document._id
+          });
+
+          // This listener lets us drag markers on the map and update their corresponding document.
+          google.maps.event.addListener(marker, 'dragend', function (event) {
+            Markers.update(marker.id, {
+              $set: {
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng()
+              }
+            });
+
+            Meteor.call('upsertMarker', {
+              _id: marker._id,
+              ownerId: Meteor.userId(),
+              type: 'User',
+              lat: coords.lat,
+              lng: coords.lng,
+              created: new Date()
+            }, (error, result) => {
+              if (!error) {
+                console.log(`Marker updated to [${coords.lat}, ${coords.lng}]`);
+              }
+            });
+          });
+
+          // Store this marker instance within the markers object.
+          markers[document._id] = marker;
+        },
+        changed: function (newDocument, oldDocument) {
+          markers[newDocument._id].setPosition({
+            lat: newDocument.lat,
+            lng: newDocument.lng
+          });
+        },
+        removed: function (oldDocument) {
+          // Remove the marker from the map
+          markers[oldDocument._id].setMap(null);
+
+          // Clear the event listener
+          google.maps.event.clearInstanceListeners(
+            markers[oldDocument._id]);
+
+          // Remove the reference to this marker instance
+          delete markers[oldDocument._id];
+        }
       });
+
     });
   });
 

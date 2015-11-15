@@ -17,6 +17,9 @@ Meteor.startup( function () {
       }
       /* jshint ignore:end */
 
+      item.location.lat = Number(item.location.lat);
+      item.location.lng = Number(item.location.lng);
+
       // Create and add Venue
       Meteor.call( 'insertVenue', {
         name: item.location.name,
@@ -29,7 +32,7 @@ Meteor.startup( function () {
         }
         if ( !error ) {
           var venueId = response;
-          // console.log( `Venue: ${venueId}` );
+          console.log( `Venue: ${venueId}` );
 
           // Create, add, and link Network to Venue
           Meteor.call( 'insertNetwork', {
@@ -46,13 +49,13 @@ Meteor.startup( function () {
               console.log( error );
             }
           } );
-
           // Create, add, and link Marker to Venue
           Meteor.call( 'insertMarker', {
             ownerId: venueId,
             type: "Venue",
             lat: item.location.lat,
-            lng: item.location.lng
+            lng: item.location.lng,
+            coordinates: [item.location.lng, item.location.lat]
           }, function ( error, response ) {
             if ( !error ) {
               console.log( `Marker: ${response}` );

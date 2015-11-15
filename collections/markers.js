@@ -1,18 +1,18 @@
 Markers = new Meteor.Collection( 'markers' );
 
-Markers.allow({
+Markers.allow( {
   insert: () => false,
   update: () => false,
   remove: () => false
-});
+} );
 
-Markers.deny({
+Markers.deny( {
   insert: () => true,
   update: () => true,
   remove: () => true
-});
+} );
 
-let MarkersSchema = new SimpleSchema({
+let MarkersSchema = new SimpleSchema( {
   "ownerId": {
     type: String,
     label: "The ID of the owner of this document"
@@ -31,12 +31,21 @@ let MarkersSchema = new SimpleSchema({
     decimal: true,
     label: "Marker Longitude"
   },
+  "coordinates": {
+    type: [ Number ]
+  },
+  "coordinates.$": {
+    type: Number,
+    decimal: true,
+    label: "Marker coordinate"
+  },
   "created": {
     type: Date,
     label: "Date created Marker in System",
+    optional: true,
     autoValue: function () {
       if ( this.isInsert ) {
-        return new Date ();
+        return new Date();
       }
     }
   },
@@ -46,10 +55,16 @@ let MarkersSchema = new SimpleSchema({
     optional: true,
     autoValue: function () {
       if ( this.isInsert ) {
-        return new Date ();
+        return new Date();
       }
     }
   }
-});
+} );
 
 Markers.attachSchema( MarkersSchema );
+
+if (Meteor.isServer){
+  Markers._ensureIndex({
+    "coordinates": "2dsphere"
+  });
+}
