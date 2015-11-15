@@ -1,7 +1,7 @@
 Meteor.methods({
   setLocationTracking: (locationTracking) => {
     if (!Meteor.user()) {
-      throw new Meteor.Error(401, 'You need to be signed in to continue');
+      throw new Meteor.Error(401, 'You need to be signed in to continue.');
     }
     check(locationTracking, Boolean);
     try {
@@ -19,7 +19,7 @@ Meteor.methods({
   },
   updateUserSettings: function (userSettings) {
     if (!Meteor.user()) {
-      throw new Meteor.Error(401, 'You need to be signed in to continue');
+      throw new Meteor.Error(401, 'You need to be signed in to continue.');
     }
 
     check(userSettings, Object);

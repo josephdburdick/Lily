@@ -33,9 +33,9 @@ let _handleRecovery = (template) => {
     email: email
   }, (error) => {
     if (error) {
-      Bert.alert(error.reason, 'warning', 'growl-top-right');
+      Bert.alert(error.reason, 'warning', 'fixed-bottom');
     } else {
-      Bert.alert('Check your inbox for a reset link!', 'success', 'growl-top-right');
+      Bert.alert('Check your inbox for a reset link!', 'success', 'fixed-bottom');
     }
   });
 };

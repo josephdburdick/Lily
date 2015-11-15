@@ -1,7 +1,7 @@
 Meteor.methods({
   isUsernameAvailable: function (username) {
     // if (Meteor.userId()) {
-    //   throw new Meteor.Error(401, 'not-authorized');
+    //   throw new Meteor.Error(401, 'You must be logged in to continue.');
     // }
     check(username, String);
 
@@ -16,7 +16,7 @@ Meteor.methods({
   },
   isUsernameUnique: function (username) {
     // if (Meteor.userId()) {
-    //   throw new Meteor.Error(401, 'not-authorized');
+    //   throw new Meteor.Error(401, 'You must be logged in to continue.');
     // }
     check(username, String);
 
@@ -32,7 +32,7 @@ Meteor.methods({
   },
   changeUsername: function (username) {
     // if (Meteor.userId()) {
-    //   throw new Meteor.Error(401, 'not-authorized');
+    //   throw new Meteor.Error(401, 'You must be logged in to continue.');
     // }
     check(username, String);
     if (/[^A-Za-z0-9\_]/g.test(username)){
@@ -54,7 +54,7 @@ Meteor.methods({
   },
   isUsernameChanged: function (username) {
     // if (Meteor.userId()) {
-    //   throw new Meteor.Error(401, 'not-authorized');
+    //   throw new Meteor.Error(401, 'You must be logged in to continue.');
     // }
     check(username, String);
   }

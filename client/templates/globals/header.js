@@ -10,9 +10,9 @@ Template.header.events({
   'click .logout' () {
     Meteor.logout((error) => {
       if (error) {
-        Bert.alert(error.reason, 'warning', 'growl-top-right');
+        Bert.alert(error.reason, 'warning', 'fixed-bottom');
       } else {
-        Bert.alert('Logged out!', 'success', 'growl-top-right');
+        Bert.alert('Logged out!', 'success', 'fixed-bottom');
       }
     });
   }

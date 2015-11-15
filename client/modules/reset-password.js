@@ -41,9 +41,9 @@ let _handleReset = (template) => {
 
   Accounts.resetPassword(token, password, (error) => {
     if (error) {
-      Bert.alert(error.reason, 'danger', 'growl-top-right');
+      Bert.alert(error.reason, 'danger', 'fixed-bottom');
     } else {
-      Bert.alert('Password reset!', 'success', 'growl-top-right');
+      Bert.alert('Password reset!', 'success', 'fixed-bottom');
     }
   });
 };
