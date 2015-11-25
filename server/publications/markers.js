@@ -40,7 +40,7 @@ Meteor.publish('allPublicMarkers', function () {
 });
 
 Meteor.publish('nearestMarkers', function (coords) {
-  check(coords, [Number]);
+  check(coords, Object);
   // if (!!params && !!params.coordinates && !!params.limit) {
   if (!!coords){
     return Markers.find({
