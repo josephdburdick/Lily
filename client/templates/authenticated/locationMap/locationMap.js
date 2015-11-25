@@ -38,7 +38,7 @@ if (Meteor.isClient) {
     self.subscribe('userSettings');
     self.subscribe('lastUserMarker');
     // self.subscribe('allPublicMarkers');
-    self.subscribe('nearestMarkers', [40.650002, -73.949997]); //Session.get('userCoords'));
+    self.subscribe('nearestMarkers', Session.get('userCoords'));
 
     Tracker.autorun(function () {
       if (!!Settings.findOne()) {
