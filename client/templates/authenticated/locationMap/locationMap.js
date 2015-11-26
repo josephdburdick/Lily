@@ -37,8 +37,8 @@ if (Meteor.isClient) {
     self.coords = new ReactiveVar(false);
     self.subscribe('userSettings');
     self.subscribe('lastUserMarker');
-    // self.subscribe('allPublicMarkers');
-    self.subscribe('nearestMarkers', [40.650002, -73.949997]); //Session.get('userCoords'));
+     // self.subscribe('allPublicMarkers');
+    // self.subscribe('nearestMarkers', [40.650002, -73.949997]); //Session.get('userCoords'));
 
     Tracker.autorun(function () {
       if (!!Settings.findOne()) {
@@ -68,7 +68,7 @@ if (Meteor.isClient) {
           var marker = new google.maps.Marker({
             draggable: true,
             animation: google.maps.Animation.DROP,
-            position: new google.maps.LatLng(document.lat, document.lng),
+            position: new google.maps.LatLng(document.coordinates.lat, document.coordinates.lng),
             map: map.instance,
             // We store the document _id on the marker in order
             // to update the document within the 'dragend' event below.
@@ -79,8 +79,7 @@ if (Meteor.isClient) {
           google.maps.event.addListener(marker, 'dragend', function (event) {
             Markers.update(marker.id, {
               $set: {
-                lat: event.latLng.lat(),
-                lng: event.latLng.lng()
+                lat: event.latLng.lat(), lng: event.latLng.lng()
               }
             });
 
@@ -88,8 +87,7 @@ if (Meteor.isClient) {
               _id: marker._id,
               ownerId: Meteor.userId(),
               type: 'User',
-              lat: coords.lat,
-              lng: coords.lng,
+              coordinates: {lat: coords.lat, lng: coords.lng},
               created: new Date()
             }, (error, result) => {
               if (!error) {
@@ -103,8 +101,8 @@ if (Meteor.isClient) {
         },
         changed: function (newDocument, oldDocument) {
           markers[newDocument._id].setPosition({
-            lat: newDocument.lat,
-            lng: newDocument.lng
+            lat: newDocument.coordinates.lat,
+            lng: newDocument.coordinates.lng
           });
         },
         removed: function (oldDocument) {
