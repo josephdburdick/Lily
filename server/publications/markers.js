@@ -40,17 +40,20 @@ Meteor.publish('allPublicMarkers', function () {
 });
 
 Meteor.publish('nearestMarkers', function (coords) {
-  check(coords, [Number]);
-  // if (!!params && !!params.coordinates && !!params.limit) {
+  check(coords, {
+    lat: Number,
+    lng: Number
+  });
+  
   if (!!coords){
     return Markers.find({
       'coordinates': {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: coords
+            coordinates: [coords.lng, coords.lat],
+            $maxDistance: Math.round(3218.688 / 2) //Math.round(params.distanceLimit),
           },
-          $maxDistance: Math.round(3218.688), //Math.round(params.distanceLimit),
           spherical: true
         }
       }

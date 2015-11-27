@@ -37,8 +37,15 @@ if (Meteor.isClient) {
     self.coords = new ReactiveVar(false);
     self.subscribe('userSettings');
     self.subscribe('lastUserMarker');
-     // self.subscribe('allPublicMarkers');
-    // self.subscribe('nearestMarkers', [40.650002, -73.949997]); //Session.get('userCoords'));
+    // self.subscribe('allPublicMarkers');
+
+    if (Session.get('userCoords')){
+      self.subscribe('nearestMarkers', Session.get('userCoords'));
+    } else {
+      self.subscribe('nearestMarkers', {
+        lat: 40.650002, lng: -73.949997
+      });
+    }
 
     Tracker.autorun(function () {
       if (!!Settings.findOne()) {
