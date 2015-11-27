@@ -21,17 +21,6 @@ let MarkersSchema = new SimpleSchema( {
     type: String,
     label: "The kind of marker (user, venue, etc)"
   },
-  // loc : { 
-  //   type: String //"Point"
-  // },
-  // "loc.coordinates": {
-  //   type: Array, //lng, lat
-  //   minCount: 2,
-  //   maxCount: 2
-  //  },
-  //  "loc.coordinates.$": {
-  //     type: Number
-  // },
   coordinates: {
     type: Object,
     label: "Marker coordinates"
