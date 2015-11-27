@@ -53,9 +53,7 @@ Meteor.startup( function () {
           Meteor.call( 'insertMarker', {
             ownerId: venueId,
             type: "Venue",
-            lat: item.location.lat,
-            lng: item.location.lng,
-            coordinates: [item.location.lng, item.location.lat]
+            coordinates: {lng: item.location.lng, lat: item.location.lat}
           }, function ( error, response ) {
             if ( !error ) {
               console.log( `Marker: ${response}` );

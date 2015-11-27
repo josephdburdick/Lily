@@ -1,12 +1,16 @@
+var coordinatesValidator = Match.Where(function (coordinates) {
+    check(coordinates.lat, Number);
+    check(coordinates.lng, Number);
+    return true;
+});
+
 Meteor.methods( {
   upsertMarker( obj ) {
     check( obj, {
       _id: String,
       ownerId: String,
       type: String,
-      lat: Number,
-      lng: Number,
-      coordinates: [ Number ]
+      coordinates: coordinatesValidator
     });
 
     try {
@@ -15,8 +19,7 @@ Meteor.methods( {
         ownerId: obj.ownerId
       }, {
         $set: {
-          lat: obj.lat,
-          lng: obj.lng
+          coordinates : obj.coordinates
         }
       } );
       return documentId;
