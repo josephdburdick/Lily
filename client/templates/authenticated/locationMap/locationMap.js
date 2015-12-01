@@ -16,12 +16,16 @@ if (Meteor.isClient) {
           if (!!coords) {
             return {
               center: new google.maps.LatLng(coords.lat, coords.lng),
+              disableDefaultUI: true,
+              zoomControl: true,
               zoom: 16
             };
           }
         } else {
           return {
             center: new google.maps.LatLng(40.783435, -73.966249),
+            disableDefaultUI: true,
+            zoomControl: true,
             zoom: 12
           };
         }
