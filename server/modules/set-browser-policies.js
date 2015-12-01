@@ -6,7 +6,7 @@ let setBrowserPolicies = () => {
     'google-analytics.com'
   ];
 
-  _.each(trusted, function(origin) {
+  _.each(trusted, function (origin) {
     origin = "https://" + origin;
     BrowserPolicy.content.allowOriginForAll(origin);
     BrowserPolicy.content.allowFrameOrigin(origin);

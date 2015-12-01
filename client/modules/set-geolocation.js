@@ -33,14 +33,19 @@ var setGeolocation = function setGeolocation(bool, template) {
           Session.set('userCoords', coords);
           Session.set('locationTracking', locationTracking);
 
-          let marker = Markers.find({ownerId: Meteor.userId()}).fetch()[0];
+          let marker = Markers.find({
+            ownerId: Meteor.userId()
+          }).fetch()[0];
 
-          if (!!marker){
+          if (!!marker) {
             Meteor.call('upsertMarker', {
               _id: marker._id,
               ownerId: Meteor.userId(),
               type: 'User',
-              coordinates: {lat: coords.lat, lng: coords.lng},
+              coordinates: {
+                lat: coords.lat,
+                lng: coords.lng
+              },
               //created: new Date()
             }, (error, result) => {
               if (!error) {
@@ -51,7 +56,10 @@ var setGeolocation = function setGeolocation(bool, template) {
             markerId = Meteor.call('insertMarker', {
               ownerId: Meteor.userId(),
               type: 'User',
-              coordinates: {lat: coords.lat, lng: coords.lng},
+              coordinates: {
+                lat: coords.lat,
+                lng: coords.lng
+              },
               //created: new Date()
             }, (error, result) => {
               if (!error) {

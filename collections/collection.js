@@ -1,4 +1,4 @@
-Collection = new Meteor.Collection( 'collection' );
+Collection = new Meteor.Collection('collection');
 
 Collection.allow({
   insert: () => false,
@@ -19,4 +19,4 @@ let CollectionSchema = new SimpleSchema({
   }
 });
 
-Collection.attachSchema( CollectionSchema );
+Collection.attachSchema(CollectionSchema);

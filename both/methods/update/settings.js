@@ -28,8 +28,8 @@ Meteor.methods({
     check(userSettings.locationTracking, Boolean);
 
     let newUsername = userSettings.username,
-        changedUsername,
-        changedTracking;
+      changedUsername,
+      changedTracking;
 
     if (newUsername !== Meteor.user().username) {
       changedUsername = Meteor.call('changeUsername', newUsername);

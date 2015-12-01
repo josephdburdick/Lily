@@ -1,7 +1,7 @@
-Template.registerHelper( 'appName', () => {
+Template.registerHelper('appName', () => {
   return "Lily";
 });
 
-Template.registerHelper( 'currentUsername', () => {
+Template.registerHelper('currentUsername', () => {
   return Meteor.user().username;
 });

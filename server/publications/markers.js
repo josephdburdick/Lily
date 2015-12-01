@@ -44,8 +44,8 @@ Meteor.publish('nearestMarkers', function (coords) {
     lat: Number,
     lng: Number
   });
-  
-  if (!!coords){
+
+  if (!!coords) {
     return Markers.find({
       'coordinates': {
         $near: {

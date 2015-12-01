@@ -39,11 +39,12 @@ if (Meteor.isClient) {
     self.subscribe('lastUserMarker');
     // self.subscribe('allPublicMarkers');
 
-    if (Session.get('userCoords')){
+    if (Session.get('userCoords')) {
       self.subscribe('nearestMarkers', Session.get('userCoords'));
     } else {
       self.subscribe('nearestMarkers', {
-        lat: 40.650002, lng: -73.949997
+        lat: 40.650002,
+        lng: -73.949997
       });
     }
 
@@ -66,7 +67,7 @@ if (Meteor.isClient) {
     GoogleMaps.ready('exampleMap', (map) => {
       // Add markers once map is ready
       let lat = map.options.center.lat,
-          lng = map.options.center.lng;
+        lng = map.options.center.lng;
 
       var markers = {};
       Markers.find().observe({
@@ -86,7 +87,8 @@ if (Meteor.isClient) {
           google.maps.event.addListener(marker, 'dragend', function (event) {
             Markers.update(marker.id, {
               $set: {
-                lat: event.latLng.lat(), lng: event.latLng.lng()
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng()
               }
             });
 
@@ -94,7 +96,10 @@ if (Meteor.isClient) {
               _id: marker._id,
               ownerId: Meteor.userId(),
               type: 'User',
-              coordinates: {lat: coords.lat, lng: coords.lng},
+              coordinates: {
+                lat: coords.lat,
+                lng: coords.lng
+              },
               created: new Date()
             }, (error, result) => {
               if (!error) {

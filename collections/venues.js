@@ -1,4 +1,4 @@
-Venues = new Meteor.Collection( 'venues' );
+Venues = new Meteor.Collection('venues');
 
 Venues.allow({
   insert: () => false,
@@ -17,18 +17,18 @@ let VenuesSchema = new SimpleSchema({
     type: String,
     label: "Venue Name"
   },
-  "type" : {
+  "type": {
     type: String,
     label: "Venue Type"
   },
-  "address" : {
+  "address": {
     type: String,
     label: "Venue Address"
   },
-  "city" : {
+  "city": {
     type: String,
     label: "Venue City"
   }
 });
 
-Venues.attachSchema( VenuesSchema );
+Venues.attachSchema(VenuesSchema);

@@ -1,4 +1,4 @@
-Settings = new Meteor.Collection( 'settings' );
+Settings = new Meteor.Collection('settings');
 
 Settings.allow({
   insert: () => false,
@@ -28,4 +28,4 @@ let SettingsSchema = new SimpleSchema({
   }
 });
 
-Settings.attachSchema( SettingsSchema );
+Settings.attachSchema(SettingsSchema);
