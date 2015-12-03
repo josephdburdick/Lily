@@ -4,7 +4,7 @@ Meteor.publish('allUserMarkers', function () {
       ownerId: this.userId
     }, {
       sort: {
-        createdAt: -1
+        created: -1
       }
     });
   }
@@ -17,7 +17,7 @@ Meteor.publish('lastUserMarker', function () {
       ownerId: this.userId
     }, {
       sort: {
-        createdAt: -1
+        created: -1
       },
       limit: 1,
     });
@@ -31,7 +31,7 @@ Meteor.publish('allPublicMarkers', function () {
       // ownerId: !this.userId
     }, {
       sort: {
-        createdAt: -1
+        created: -1
       },
       limit: 40
     });

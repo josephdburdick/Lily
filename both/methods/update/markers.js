@@ -6,6 +6,11 @@ var coordinatesValidator = Match.Where(function (coordinates) {
 
 Meteor.methods({
   upsertMarker(obj) {
+    if (!this.userId || obj.ownerId !== this.userId) {
+      setTimeout(function () {
+        throw new Meteor.Error(500, 'There was an error processing your request');
+      }, 0);
+    }
     check(obj, {
       _id: String,
       ownerId: String,
@@ -17,8 +22,7 @@ Meteor.methods({
     try {
       var documentId = Markers.update({
         _id: obj._id,
-        ownerId: obj.ownerId,
-        updated: obj.updated
+        ownerId: obj.ownerId
       }, {
         $set: {
           coordinates: obj.coordinates

@@ -15,16 +15,14 @@ var setGeolocation = function setGeolocation(bool, template) {
   // setGeolocation: TRUE
   if (!!bool) {
     let permitted = askPermission(),
-        geolocationLastChecked;
+      geolocationLastChecked;
     if (!!permitted) {
       geolocation = new Geolocation(3000, true);
 
       geolocation.getCoordinates((coords, accuracy) => {
         Session.set('userCoords', coords);
-        geolocationWatchId = this.watchId;
         Session.set('geolocationWatchId', this.watchId);
         Session.set('geolocationLastChecked', this.lastCheck);
-        geolocationLastChecked = this.lastCheck;
 
         if (template && template.cords) {
           template.coords.set(coords);
@@ -43,7 +41,7 @@ var setGeolocation = function setGeolocation(bool, template) {
               lat: coords.lat,
               lng: coords.lng
             },
-            updated: new Date(geolocationLastChecked)
+            updated: new Date(Session.get('geolocationLastChecked'))
           }, (error, result) => {
             if (!error) {
               console.log(`Marker updated to [${coords.lat}, ${coords.lng}]`);

@@ -2,13 +2,17 @@ Markers = new Meteor.Collection('markers');
 
 Markers.allow({
   insert: () => false,
-  update: () => false,
+  update: (userId, doc) => {
+    return doc.ownerId === userId;
+  },
   remove: () => false
 });
 
 Markers.deny({
   insert: () => true,
-  update: () => true,
+  update: (userId, doc) => {
+    return doc.ownerId !== userId;
+  },
   remove: () => true
 });
 
