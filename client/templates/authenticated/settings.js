@@ -16,8 +16,8 @@ Template.settings.events({
         locationTracking: $(ev.currentTarget).find('#user-geolocation').is(':checked')
       };
       Meteor.call('updateUserSettings', userSettings, function (error, result) {
-        if (!error) Bert.alert('Updated user settings', 'success', 'fixed-bottom');
-        if (error) Bert.alert(error.reason, 'danger', 'fixed-bottom');
+        if (!error) Bert.alert('Updated user settings', 'success', 'fixed-top');
+        if (error) Bert.alert(error.reason, 'danger', 'fixed-top');
       });
     }
   }

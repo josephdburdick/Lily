@@ -42,9 +42,9 @@ let _handleSignup = (template) => {
 
   Accounts.createUser(user, (error) => {
     if (error) {
-      Bert.alert(error.reason, 'danger', 'fixed-bottom');
+      Bert.alert(error.reason, 'danger', 'fixed-top');
     } else {
-      Bert.alert('Welcome!', 'success', 'fixed-bottom');
+      Bert.alert('Welcome!', 'success', 'fixed-top');
     }
   });
 };

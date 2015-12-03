@@ -1,10 +1,11 @@
 // var Geolocation = function Geolocation() {
-var Geolocation = function Geolocation(maximumAge, accurate) {
+function Geolocation(maximumAge, accurate) {
+
   this.settings = {
     'maximumAge': maximumAge,
     'accurate': accurate
   };
-};
+}
 
 Geolocation.prototype = {
   position: {
@@ -30,14 +31,30 @@ Geolocation.prototype = {
     this.lastCheck = new Date(position.timestamp);
 
     var pos = {
-      latitude: this.position.latitude,
-      longitude: this.position.longitude
+      lat: this.position.latitude,
+      lng: this.position.longitude
     };
     // call callback with position and accuracy parameters
     this.callback(pos, this.position.accuracy);
   },
   onError: function (error) {
-    console.log(error.code + ' ' + error.message);
+    var message;
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        message = "You must give permission to use your location to calculate distances.";
+        break;
+      case error.POSITION_UNAVAILABLE:
+        message = "There was a problem getting your location from your device. Please try again.";
+        break;
+      case error.TIMEOUT:
+        message = "It took too long getting your position. Please try again.";
+        break;
+      default:
+        message = "An unknown error has occured. Please try again.";
+        break;
+    }
+    Bert.alert(message, 'warning', 'fixed-top');
+    this.callback = message;
   },
   getCoordinates: function (callback) {
     // Helper function to bind scope to callback function as seen at http://stackoverflow.com/questions/183214/javascript-callback-scope
@@ -59,4 +76,4 @@ Geolocation.prototype = {
   }
 };
 
-Modules.client.geolocation = Geolocation;
+Modules.client.Geolocation = Geolocation;

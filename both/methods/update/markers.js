@@ -10,13 +10,15 @@ Meteor.methods({
       _id: String,
       ownerId: String,
       type: String,
-      coordinates: coordinatesValidator
+      coordinates: coordinatesValidator,
+      updated: Date
     });
 
     try {
       var documentId = Markers.update({
         _id: obj._id,
-        ownerId: obj.ownerId
+        ownerId: obj.ownerId,
+        updated: obj.updated
       }, {
         $set: {
           coordinates: obj.coordinates

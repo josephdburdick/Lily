@@ -1,8 +1,10 @@
 var setGeolocation = function setGeolocation(bool, template) {
   let
+    coords = null,
     geolocation = null,
     geolocationWatchId = null,
     askPermission = Modules.client.askPermission,
+    Geolocation = Modules.client.Geolocation,
     bertStatus = (permission) => {
       return {
         text: !!permission ? 'On' : 'Off',
@@ -12,113 +14,57 @@ var setGeolocation = function setGeolocation(bool, template) {
 
   // setGeolocation: TRUE
   if (!!bool) {
-    let permitted = askPermission();
+    let permitted = askPermission(),
+        geolocationLastChecked;
     if (!!permitted) {
-      geolocation = new Modules.client.geolocation(3000, true);
-      geolocationWatchId = navigator.geolocation.watchPosition(function (response) {
-        let locationTracking = !!!response.PERMISSION_DENIED,
-          status = bertStatus(locationTracking);
+      geolocation = new Geolocation(3000, true);
 
-        // Tracking allowed
-        if (locationTracking) {
-          let coords = {
-            lat: response.coords.latitude,
-            lng: response.coords.longitude
-          };
+      geolocation.getCoordinates((coords, accuracy) => {
+        Session.set('userCoords', coords);
+        geolocationWatchId = this.watchId;
+        Session.set('geolocationWatchId', this.watchId);
+        Session.set('geolocationLastChecked', this.lastCheck);
+        geolocationLastChecked = this.lastCheck;
 
-          if (template && template.cords) {
-            template.coords.set(coords);
-          }
-
-          Session.set('userCoords', coords);
-          Session.set('locationTracking', locationTracking);
-
-          let marker = Markers.find({
-            ownerId: Meteor.userId()
-          }).fetch()[0];
-
-          if (!!marker) {
-            Meteor.call('upsertMarker', {
-              _id: marker._id,
-              ownerId: Meteor.userId(),
-              type: 'User',
-              coordinates: {
-                lat: coords.lat,
-                lng: coords.lng
-              },
-              //created: new Date()
-            }, (error, result) => {
-              if (!error) {
-                console.log(`Marker updated to [${coords.lat}, ${coords.lng}]`);
-              }
-            });
-          } else {
-            markerId = Meteor.call('insertMarker', {
-              ownerId: Meteor.userId(),
-              type: 'User',
-              coordinates: {
-                lat: coords.lat,
-                lng: coords.lng
-              },
-              //created: new Date()
-            }, (error, result) => {
-              if (!error) {
-                console.log(`Marker added at [${coords.lat}, ${coords.lng}]`);
-              }
-            });
-          }
-
-          return true;
-
+        if (template && template.cords) {
+          template.coords.set(coords);
         }
 
-        // Tracking disallowed
-        if (!locationTracking) {
-          // error response
-          Bert.alert(response.message, 'error', 'fixed-bottom');
-          // Session.set( 'locationTracking', locationTracking );
-          Meteor.call('setLocationTracking', locationTracking, (err, result) => {
-            if (!err) {
-              Bert.alert(`Location tracking ${status.text}.`, status.color, 'fixed-bottom');
-            } else {
-              Bert.alert(err, 'error', 'fixed-bottom');
+        let marker = Markers.find({
+          ownerId: Meteor.userId()
+        }).fetch()[0];
+
+        if (!!marker) {
+          Meteor.call('upsertMarker', {
+            _id: marker._id,
+            ownerId: Meteor.userId(),
+            type: 'User',
+            coordinates: {
+              lat: coords.lat,
+              lng: coords.lng
+            },
+            updated: new Date(geolocationLastChecked)
+          }, (error, result) => {
+            if (!error) {
+              console.log(`Marker updated to [${coords.lat}, ${coords.lng}]`);
             }
           });
-          return false;
+        } else {
+          markerId = Meteor.call('insertMarker', {
+            ownerId: Meteor.userId(),
+            type: 'User',
+            coordinates: {
+              lat: coords.lat,
+              lng: coords.lng
+            }
+          }, (error, result) => {
+            if (!error) {
+              console.log(`Marker added at [${coords.lat}, ${coords.lng}]`);
+            }
+          });
         }
       });
-      Session.set('geolocationWatchId', geolocationWatchId);
-    } else {
-      Bert.alert('Location tracking cancelled.', 'warning', 'fixed-bottom');
-      Meteor.call('setLocationTracking', false, (error, result) => {
-        if (!error) {
-          Bert.alert(`Location tracking cancelled.`, 'warning', 'fixed-bottom');
-          if (result === 1) {
-            console.log('User cancelled tracking.');
-          }
-          return false;
-        }
-        if (error) {
-          Bert.alert(error.reason, 'error', 'fixed-bottom');
-          return false;
-        }
-      });
-      return false;
     }
-    // setGeolocation: FALSE
-  } else {
-    navigator.geolocation.clearWatch(Session.get('geolocationWatchId'));
-
-    Meteor.call('setLocationTracking', false, (error, result) => {
-      if (!error) {
-        Bert.alert(`Location tracking off.`, 'warning', 'fixed-bottom');
-        return false;
-      }
-      if (error) {
-        Bert.alert(error.reason, 'error', 'fixed-bottom');
-        return error.reason;
-      }
-    });
   }
 };
 
