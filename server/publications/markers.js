@@ -39,14 +39,14 @@ Meteor.publish('allPublicMarkers', function () {
   this.ready();
 });
 
-Meteor.publish('nearestMarkers', function (coords) {
-  check(coords, {
-    lat: Number,
-    lng: Number
-  });
-
-  if (!!coords) {
-    return Markers.find({
+Meteor.publish('nearestMarkersByPoint', function (coords) {
+  if (this.userId) {
+    check(coords, {
+      lat: Number,
+      lng: Number
+    });
+    let ownerIds;
+     let markerCursor = Markers.find({
       'coordinates': {
         $near: {
           $geometry: {
@@ -60,5 +60,14 @@ Meteor.publish('nearestMarkers', function (coords) {
     }, {
       limit: 40
     });
+    ownerIds = markerCursor.map(function(marker){
+      return marker.ownerId;
+    });
+
+    return [
+      markerCursor,
+      Venues.find({_id: {$in: ownerIds}}),
+      Networks.find({ownerId: {$in: ownerIds}})
+    ];
   }
 });
