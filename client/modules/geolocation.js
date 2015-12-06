@@ -54,7 +54,7 @@ Geolocation.prototype = {
         break;
     }
     Bert.alert(message, 'warning', 'fixed-top');
-    this.callback = message;
+    // this.callback = message;
   },
   getCoordinates: function (callback) {
     // Helper function to bind scope to callback function as seen at http://stackoverflow.com/questions/183214/javascript-callback-scope

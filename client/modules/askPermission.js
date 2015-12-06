@@ -11,7 +11,6 @@ var askPermission = function askPermission() {
   } else {
     return true;
   }
-
 };
 
 Modules.client.askPermission = askPermission;
