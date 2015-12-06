@@ -70,12 +70,37 @@ if (Meteor.isClient) {
         lat = map.options.center.lat,
         lng = map.options.center.lng;
 
-      var markers = {};
+      let markers = {},
+          markerClusterer;
       Markers.find().observe({
         added: function (document) {
           // Create a marker for this document
-          var infowindow = new google.maps.InfoWindow();
-          var marker = new google.maps.Marker({
+
+          let infowindow = new google.maps.InfoWindow(),
+              marker;
+
+          if (document.ownerId == Meteor.userId()){
+            // Current user marker
+            marker = new google.maps.Marker({
+              draggable: true,
+              animation: google.maps.Animation.DROP,
+              position: new google.maps.LatLng(document.coordinates.lat, document.coordinates.lng),
+              map: map.instance,
+              // We store the document _id on the marker in order
+              // to update the document within the 'dragend' event below.
+              _id: document._id,
+              ownerId: document.ownerId,
+              icon: Modules.client.UI.createIcon('png', {
+                name: 'flag',
+                size: new google.maps.Size(256,256),
+                scaledSize: new google.maps.Size(64, 64),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(0, 40)
+              })
+            });
+          }
+          // Location markers
+          marker = new google.maps.Marker({
             draggable: true,
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(document.coordinates.lat, document.coordinates.lng),
@@ -83,18 +108,20 @@ if (Meteor.isClient) {
             // We store the document _id on the marker in order
             // to update the document within the 'dragend' event below.
             _id: document._id,
-            ownerId: document.ownerId
+            ownerId: document.ownerId,
+            icon: Modules.client.UI.createIcon('png', {
+              name: 'pin',
+              size: new google.maps.Size(128,128),
+              scaledSize: new google.maps.Size(32, 32),
+              origin: new google.maps.Point(0,0),
+              anchor: new google.maps.Point(0, 40)
+            })
           });
 
           // marker.set('title', venue.name);
           marker.addListener('click', function (e) {
             infowindow.setContent(document.coordinates.lat.toString());
             infowindow.open(map.instance, marker);
-          });
-
-
-          $(window).on('resize', function () {
-            map.instance.setCenter(new google.maps.LatLng(Session.get('lat'), Session.get('lon')));
           });
 
           // This listener lets us drag markers on the map and update their corresponding document.
@@ -107,7 +134,7 @@ if (Meteor.isClient) {
                 }
               }
             });
-            console.log(event);
+
             Meteor.call('upsertMarker', {
               _id: marker._id,
               ownerId: Meteor.userId(),
@@ -117,7 +144,7 @@ if (Meteor.isClient) {
                 lng: event.latLng.lng()
               },
               updated: new Date()
-            }, function(error, result) {
+            }, function (error, result) {
               if (!error) {
                 Bert.alert('Marker updated', 'success', 'fixed-top');
               }
@@ -148,6 +175,8 @@ if (Meteor.isClient) {
           delete markers[oldDocument._id];
         }
       });
+
+      markerClusterer = new Modules.client.markerClusterer(map, markers);
 
     });
   });
