@@ -16,19 +16,14 @@ let extendAccounts = () => {
     if (!user.username)
       user.username = _createUsernameFromEmail(user.emails[0].address);
 
-    let settingsId = Settings.insert({
-      userId: user._id
-    });
-
-    Settings.update({
-      _id: settingsId
-    }, {
-      $set: {
-        settings: {
-          locationTracking: true
-        }
+    let defaultSettings = {
+      ownerId: user._id,
+      type: 'User',
+      settings: {
+        locationTracking: true
       }
-    });
+    };
+    Meteor.call('insertUserSettings', defaultSettings);
 
     return user;
   });
