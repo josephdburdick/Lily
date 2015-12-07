@@ -88,10 +88,7 @@ Meteor.publish('allPublicMarkers', function () {
 
 Meteor.publish('nearestMarkersByPoint', function (coords) {
   if (this.userId) {
-    check(coords, {
-      lat: Number,
-      lng: Number
-    });
+    check(coords, Modules.both.validateCoordinates);
     let ownerIds;
     let markerCursor = Markers.find({
       'coordinates': {

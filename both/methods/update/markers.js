@@ -1,9 +1,3 @@
-var coordinatesValidator = Match.Where(function (coordinates) {
-  check(coordinates.lat, Number);
-  check(coordinates.lng, Number);
-  return true;
-});
-
 Meteor.methods({
   upsertMarker(obj) {
     if (!this.userId || obj.ownerId !== this.userId) {
@@ -15,7 +9,7 @@ Meteor.methods({
       _id: String,
       ownerId: String,
       type: String,
-      coordinates: coordinatesValidator,
+      coordinates: Modules.both.validateCoordinates,
       updated: Date
     });
 
