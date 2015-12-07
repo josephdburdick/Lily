@@ -85,6 +85,9 @@ let UI = () => {
     },
     flag: {
       url: `${ui.icons.png.srcDir}/marker_flag.png`
+    },
+    flag2: {
+      url: `${ui.icons.png.srcDir}/marker_flag2.png`
     }
   };
 
