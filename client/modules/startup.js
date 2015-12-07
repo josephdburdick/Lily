@@ -1,5 +1,6 @@
 let startup = () => {
   Meteor.startup(function () {
+    GoogleMaps.load();
     _geolocation();
     _setGeolocation();
     _markerClusterer();
