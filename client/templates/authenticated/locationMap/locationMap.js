@@ -41,6 +41,7 @@ if (Meteor.isClient) {
     self.coords = new ReactiveVar(false);
     self.subscribe('userSettings');
     self.subscribe('lastUserMarker');
+    self.subscribe('allUsers');
 
     if (!!Session.get('userCoords') || !!Geolocation.latLng()) {
       let markersSub = self.subscribe('nearestMarkersByPoint', Session.get('userCoords'));
@@ -137,16 +138,26 @@ if (Meteor.isClient) {
             }
             // marker.set('title', venue.name);
             marker.addListener('click', function (e) {
-              let _venue = Venues.findOne(document.ownerId),
-
+              if (document.type === "user".toLowerCase()){
+                let user;
+                if (document.ownerId === Meteor.userId()){
+                  user = Meteor.user();
+                } else {
+                  user = Meteor.users.findOne({_id: document.ownerId});
+                }
                 markerContent = ['<div class="poi-info-window gm-style">',
-                                    '<div class="title full-width">' + _venue.name + '</div>',
-                                    '<div class="text-muted">' + _venue.type + '</div>',
-                                    '<div class="address">' + _venue.address + ', ' + _venue.city + '</div>',
+                                    '<div class="title full-width">Hi, ' + user.username + '</div>',
                                   '</div>'].join('\n');
-                infowindow.setContent(markerContent);
-                infowindow.open(map.instance, marker);
-
+              } else if ((document.type === "venue".toLowerCase())){
+                let _venue = Venues.findOne(document.ownerId),
+                  markerContent = ['<div class="poi-info-window gm-style">',
+                                      '<div class="title full-width">' + _venue.name + '</div>',
+                                      '<div class="text-muted">' + _venue.type + '</div>',
+                                      '<div class="address">' + _venue.address + ', ' + _venue.city + '</div>',
+                                    '</div>'].join('\n');
+              }
+              infowindow.setContent(markerContent);
+              infowindow.open(map.instance, marker);
             });
 
             // Store this marker instance within the markers object.
