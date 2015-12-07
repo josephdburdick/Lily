@@ -1,12 +1,12 @@
 Meteor.methods({
-  setLocationTracking: (locationTracking) => {
-    if (!Meteor.user()) {
-      throw new Meteor.Error(401, 'You need to be signed in to continue.');
+  setLocationTracking(locationTracking) {
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(401, 'You must be logged in to continue.');
     }
     check(locationTracking, Boolean);
     try {
       var documentId = Settings.update({
-        userId: Meteor.userId()
+        ownerId: Meteor.userId()
       }, {
         $set: {
           "settings.locationTracking": locationTracking
@@ -17,26 +17,32 @@ Meteor.methods({
       return exception;
     }
   },
-  updateUserSettings: function (userSettings) {
-    if (!Meteor.user()) {
-      throw new Meteor.Error(401, 'You need to be signed in to continue.');
+  updateUserSettings(obj) {
+    if (!Meteor.userId()) {
+      throw new Meteor.Error(401, 'You must be logged in to continue.');
     }
-
-    check(userSettings, Object);
-    check(userSettings._id, String);
-    check(userSettings.username, String);
-    check(userSettings.locationTracking, Boolean);
-
-    let newUsername = userSettings.username,
+    check(obj, {
+      ownerId: String,
+      username: String,
+      settings: {
+        locationTracking: Boolean
+      }
+    });
+    let newUsername = obj.username,
       changedUsername,
       changedTracking;
 
     if (newUsername !== Meteor.user().username) {
       changedUsername = Meteor.call('changeUsername', newUsername);
-      changedTracking = Meteor.call('setLocationTracking', userSettings.locationTracking);
+      changedTracking = Meteor.call('setLocationTracking', obj.settings.locationTracking);
+    }
+    obj.type = "User";
 
-    } else {
-      changedTracking = Meteor.call('setLocationTracking', userSettings.locationTracking);
+    try {
+      var documentId = Settings.update(obj);
+      return documentId;
+    } catch (exception) {
+      return exception;
     }
   }
 });
