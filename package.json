@@ -6,6 +6,6 @@
     "start": "meteor --settings settings-development.json",
     "staging": "meteor deploy staging.meteor.com --settings settings-development.json",
     "production": "meteor deploy production.meteor.com --settings settings-production.json",
-    "debug": "meteor debug --settings settings-development.json"
+    "debug": "iron-node meteor --settings settings-development.json"
   }
 }

@@ -1,4 +1,4 @@
-Settings = new Meteor.Collection( 'settings' );
+Settings = new Meteor.Collection('settings');
 
 Settings.allow({
   insert: () => false,
@@ -13,9 +13,13 @@ Settings.deny({
 });
 
 let SettingsSchema = new SimpleSchema({
-  "userId": {
+  "ownerId": {
     type: String,
     label: "The ID of the owner of this document"
+  },
+  "type": {
+    type: String,
+    optional: true
   },
   "settings.locationTracking": {
     type: Boolean,
@@ -28,4 +32,4 @@ let SettingsSchema = new SimpleSchema({
   }
 });
 
-Settings.attachSchema( SettingsSchema );
+Settings.attachSchema(SettingsSchema);

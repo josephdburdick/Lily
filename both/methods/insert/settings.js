@@ -1,13 +1,15 @@
 Meteor.methods({
-  insertMarker(obj) {
+  insertUserSettings(obj) {
     check(obj, {
       ownerId: String,
       type: String,
-      coordinates: Modules.both.validateCoordinates,
+      settings: {
+        locationTracking: Boolean
+      }
     });
 
     try {
-      var documentId = Markers.insert(obj);
+      var documentId = Settings.insert(obj);
       return documentId;
     } catch (exception) {
       return exception;

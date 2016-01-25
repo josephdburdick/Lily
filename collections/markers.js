@@ -1,18 +1,22 @@
-Markers = new Meteor.Collection( 'markers' );
+Markers = new Meteor.Collection('markers');
 
-Markers.allow( {
+Markers.allow({
   insert: () => false,
-  update: () => false,
+  update: (userId, doc) => {
+    return doc.ownerId === userId;
+  },
   remove: () => false
-} );
+});
 
-Markers.deny( {
+Markers.deny({
   insert: () => true,
-  update: () => true,
+  update: (userId, doc) => {
+    return doc.ownerId !== userId;
+  },
   remove: () => true
-} );
+});
 
-let MarkersSchema = new SimpleSchema( {
+let MarkersSchema = new SimpleSchema({
   "ownerId": {
     type: String,
     label: "The ID of the owner of this document"
@@ -21,30 +25,24 @@ let MarkersSchema = new SimpleSchema( {
     type: String,
     label: "The kind of marker (user, venue, etc)"
   },
-  "lat": {
-    type: Number,
-    decimal: true,
-    label: "Marker Latitude"
+  coordinates: {
+    type: Object,
+    label: "Marker coordinates"
   },
-  "lng": {
+  'coordinates.lng': {
     type: Number,
-    decimal: true,
-    label: "Marker Longitude"
+    decimal: true
   },
-  "coordinates": {
-    type: [ Number ]
-  },
-  "coordinates.$": {
+  'coordinates.lat': {
     type: Number,
-    decimal: true,
-    label: "Marker coordinate"
+    decimal: true
   },
   "created": {
     type: Date,
     label: "Date created Marker in System",
     optional: true,
     autoValue: function () {
-      if ( this.isInsert ) {
+      if (this.isInsert) {
         return new Date();
       }
     }
@@ -54,16 +52,16 @@ let MarkersSchema = new SimpleSchema( {
     label: "Date updated Marker in System",
     optional: true,
     autoValue: function () {
-      if ( this.isInsert ) {
+      if (this.isInsert) {
         return new Date();
       }
     }
   }
-} );
+});
 
-Markers.attachSchema( MarkersSchema );
+Markers.attachSchema(MarkersSchema);
 
-if (Meteor.isServer){
+if (Meteor.isServer) {
   Markers._ensureIndex({
     "coordinates": "2dsphere"
   });

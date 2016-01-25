@@ -1,4 +1,4 @@
-Networks = new Meteor.Collection( 'networks' );
+Networks = new Meteor.Collection('networks');
 
 Networks.allow({
   insert: () => false,
@@ -13,31 +13,31 @@ Networks.deny({
 });
 
 let NetworksSchema = new SimpleSchema({
-  "ownerId" : {
+  "ownerId": {
     type: String,
     label: "Network Owner"
   },
-  "name" : {
+  "name": {
     type: String,
     label: "Network name"
   },
-  "password" : {
+  "password": {
     type: String,
     label: "Network password",
     optional: true
   },
-  "hasPassword" : {
+  "hasPassword": {
     type: Boolean,
     label: "Network has password"
   },
-  "isPublic" : {
+  "isPublic": {
     type: Boolean,
     label: "Network is public"
   },
-  "verified" : {
+  "verified": {
     type: Boolean,
     label: "Network verified"
   }
 });
 
-Networks.attachSchema( NetworksSchema );
+Networks.attachSchema(NetworksSchema);

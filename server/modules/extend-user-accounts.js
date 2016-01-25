@@ -1,5 +1,5 @@
 Meteor.users.deny({
-  update: function() {
+  update: function () {
     return true;
   }
 });
@@ -7,7 +7,7 @@ let _createUsernameFromEmail = (email) => {
   return email.split('@')[0].toLowerCase();
 };
 let extendAccounts = () => {
-  Accounts.onCreateUser(function(options, user) {
+  Accounts.onCreateUser(function (options, user) {
 
     // We still want the default hook's 'profile' behavior.
     if (options.profile)
@@ -16,11 +16,14 @@ let extendAccounts = () => {
     if (!user.username)
       user.username = _createUsernameFromEmail(user.emails[0].address);
 
-    let settingsId = Settings.insert({ userId: user._id });
-
-    Settings.update({_id: settingsId}, {
-      $set: { settings: { locationTracking: true } }
-    });
+    let defaultSettings = {
+      ownerId: user._id,
+      type: 'User',
+      settings: {
+        locationTracking: true
+      }
+    };
+    Meteor.call('insertUserSettings', defaultSettings);
 
     return user;
   });

@@ -1,5 +1,5 @@
 Template.body.events({});
 
-Template.body.onCreated(function() {
-  
+Template.body.onCreated(function () {
+
 });

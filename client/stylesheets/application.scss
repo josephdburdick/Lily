@@ -1,12 +1,15 @@
 @import "tools/extends";
 @import "tools/overrides";
-
 @import "objects/forms";
-
 @import "components/login";
 
-html, body{
+html,
+body {
   height: 100%;
 }
-body{ padding-top: 50px; }
+
+body {
+  padding-top: 50px;
+}
+
 // main{ padding-top: 50px; }

@@ -11,13 +11,15 @@ Template.settings.events({
     ev.preventDefault();
     if (!$(ev.currentTarget).find('.error').is(':visible').length) {
       let userSettings = {
-        _id: Meteor.userId(),
+        ownerId: Meteor.userId(),
         username: template.find('#user-name').value,
-        locationTracking: $(ev.currentTarget).find('#user-geolocation').is(':checked')
+        settings:{
+          locationTracking: $(ev.currentTarget).find('#user-geolocation').is(':checked')
+        }
       };
       Meteor.call('updateUserSettings', userSettings, function (error, result) {
-        if (!error) Bert.alert('Updated user settings', 'success', 'fixed-bottom');
-        if (error) Bert.alert(error.reason, 'danger', 'fixed-bottom');
+        if (!error) Bert.alert('Updated user settings', 'success', 'fixed-top');
+        if (error) Bert.alert(error.reason, 'danger', 'fixed-top');
       });
     }
   }

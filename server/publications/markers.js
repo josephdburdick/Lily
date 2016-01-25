@@ -4,7 +4,7 @@ Meteor.publish('allUserMarkers', function () {
       ownerId: this.userId
     }, {
       sort: {
-        createdAt: -1
+        created: -1
       }
     });
   }
@@ -17,7 +17,7 @@ Meteor.publish('lastUserMarker', function () {
       ownerId: this.userId
     }, {
       sort: {
-        createdAt: -1
+        created: -1
       },
       limit: 1,
     });
@@ -31,7 +31,7 @@ Meteor.publish('allPublicMarkers', function () {
       // ownerId: !this.userId
     }, {
       sort: {
-        createdAt: -1
+        created: -1
       },
       limit: 40
     });
@@ -39,23 +39,40 @@ Meteor.publish('allPublicMarkers', function () {
   this.ready();
 });
 
-Meteor.publish('nearestMarkers', function (coords) {
-  check(coords, Object);
-  // if (!!params && !!params.coordinates && !!params.limit) {
-  if (!!coords){
-    return Markers.find({
+Meteor.publish('nearestMarkersByPoint', function (coords) {
+  if (this.userId) {
+    check(coords, Modules.both.validateCoordinates);
+    let ownerIds;
+    let markerCursor = Markers.find({
       'coordinates': {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: coords
+            coordinates: [coords.lng, coords.lat],
+            $maxDistance: Math.round(3218.688 / 2) //Math.round(params.distanceLimit),
           },
-          $maxDistance: Math.round(3218.688), //Math.round(params.distanceLimit),
           spherical: true
         }
       }
     }, {
       limit: 40
     });
+    ownerIds = markerCursor.map(function (marker) {
+      return marker.ownerId;
+    });
+
+    return [
+      markerCursor,
+      Venues.find({
+        _id: {
+          $in: ownerIds
+        }
+      }),
+      Networks.find({
+        ownerId: {
+          $in: ownerIds
+        }
+      })
+    ];
   }
 });
